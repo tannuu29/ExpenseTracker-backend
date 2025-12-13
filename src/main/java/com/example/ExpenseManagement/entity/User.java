@@ -1,0 +1,28 @@
+package com.example.ExpenseManagement.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
+
+@Entity
+@Data
+public class User implements UserDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long userId;
+    @Column(unique = true, nullable = false)
+    private String username;
+    private String name;
+    @Column(nullable = false)
+    private String password;
+    private String mobile;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+}
