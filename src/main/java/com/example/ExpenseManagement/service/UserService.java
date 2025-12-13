@@ -29,6 +29,7 @@ public class UserService implements UserDetailsService {
         return "User Successfully added";
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepo.findByUsername(username).orElse(null);
