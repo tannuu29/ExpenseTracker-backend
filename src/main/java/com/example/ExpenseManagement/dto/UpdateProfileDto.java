@@ -3,11 +3,8 @@ package com.example.ExpenseManagement.dto;
 import lombok.Data;
 
 @Data
-public class UserResDto {
-    private Long userId;
-    private String username;
+public class UpdateProfileDto {
     private String name;
-    private String password;
+    private String username;
     private String mobile;
-
 }

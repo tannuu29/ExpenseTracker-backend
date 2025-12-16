@@ -3,11 +3,15 @@ package com.example.ExpenseManagement.controller;
 import com.example.ExpenseManagement.dto.AuthReqDto;
 import com.example.ExpenseManagement.utils.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 public class AuthController {
@@ -17,17 +21,21 @@ public class AuthController {
     private JWTUtils jwtUtils;
 
     @PostMapping("/login")
-    public String getToken(@RequestBody AuthReqDto authReqDto){
+    public ResponseEntity<?> getToken(@RequestBody AuthReqDto authReqDto){
         try {
             manager.authenticate(new UsernamePasswordAuthenticationToken(
                     authReqDto.getUsername(),
                     authReqDto.getPassword()
             ));
-            return jwtUtils.generateToken(authReqDto.getUsername());
+            return ResponseEntity.ok(
+                    Map.of("token", jwtUtils.generateToken(authReqDto.getUsername()))
+            );
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
-            throw new RuntimeException("user not found");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid username or password");
+//            System.out.println(e.getMessage());
+//            throw new RuntimeException("user not found");
         }
     }
 }
