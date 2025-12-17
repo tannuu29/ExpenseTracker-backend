@@ -47,7 +47,6 @@ public class UserService implements UserDetailsService {
     public void updateProfile(String username, UpdateProfileDto profileDto){
         User user = userRepo.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("User not found"));
         user.setName(profileDto.getName());
-        user.setUsername(profileDto.getUsername());
         user.setMobile(profileDto.getMobile());
 
         userRepo.save(user);
