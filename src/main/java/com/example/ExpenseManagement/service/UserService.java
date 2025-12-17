@@ -4,7 +4,9 @@ import com.example.ExpenseManagement.config.SecurityConfig;
 import com.example.ExpenseManagement.dto.ChangePasswordDto;
 import com.example.ExpenseManagement.dto.UpdateProfileDto;
 import com.example.ExpenseManagement.dto.UserReqDto;
+import com.example.ExpenseManagement.dto.UserResDto;
 import com.example.ExpenseManagement.entity.User;
+import com.example.ExpenseManagement.enums.Role;
 import com.example.ExpenseManagement.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -30,8 +34,28 @@ public class UserService implements UserDetailsService {
         user.setUsername(userReqDto.getUsername());
         user.setPassword(config.encoder().encode(userReqDto.getPassword()));
         user.setMobile(userReqDto.getMobile());
+        user.setRole(Role.USER);
         userRepo.save(user);
         return "User Successfully added";
+    }
+
+    public UserResDto getUserById(Long id){
+        User user = userRepo.findById(id).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+
+        return mapToDto(user);
+    }
+
+    public List<UserResDto> getAllUsers(){
+        return userRepo.findAll().stream().map(this::mapToDto).toList();
+    }
+    public UserResDto mapToDto(User user){
+        UserResDto userResDto = new UserResDto();
+        userResDto.setUserId(user.getUserId());
+        userResDto.setName(user.getName());
+        userResDto.setUsername(user.getUsername());
+        userResDto.setMobile(user.getMobile());
+        userResDto.setRole(user.getRole().name());
+        return userResDto;
     }
 
     public void changePassword(String username, ChangePasswordDto passwordDto){
@@ -54,8 +78,6 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByUsername(username).orElse(null);
+        return userRepo.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
-
-//    public UserResDto getUserById(){}
 }

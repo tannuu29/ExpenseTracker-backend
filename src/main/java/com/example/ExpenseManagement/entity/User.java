@@ -1,5 +1,6 @@
 package com.example.ExpenseManagement.entity;
 
+import com.example.ExpenseManagement.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +21,9 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
     private String mobile;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

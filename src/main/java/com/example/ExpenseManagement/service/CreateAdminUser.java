@@ -2,6 +2,7 @@ package com.example.ExpenseManagement.service;
 
 import com.example.ExpenseManagement.config.SecurityConfig;
 import com.example.ExpenseManagement.entity.User;
+import com.example.ExpenseManagement.enums.Role;
 import com.example.ExpenseManagement.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -23,6 +24,8 @@ public class CreateAdminUser {
                 user.setUsername("tannu");
                 user.setPassword(config.encoder().encode("adminnn"));
                 user.setName("tannu");
+
+                user.setRole(Role.ADMIN);
                 userRepo.save(user);
             }
         };
