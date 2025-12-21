@@ -34,6 +34,7 @@ public class UserService implements UserDetailsService {
         user.setUsername(userReqDto.getUsername());
         user.setPassword(config.encoder().encode(userReqDto.getPassword()));
         user.setMobile(userReqDto.getMobile());
+        user.setEmail(userReqDto.getEmail());
         user.setRole(Role.USER);
         userRepo.save(user);
         return "User Successfully added";
@@ -54,6 +55,7 @@ public class UserService implements UserDetailsService {
         userResDto.setName(user.getName());
         userResDto.setUsername(user.getUsername());
         userResDto.setMobile(user.getMobile());
+        userResDto.setEmail(user.getEmail());
         userResDto.setRole(user.getRole().name());
         return userResDto;
     }

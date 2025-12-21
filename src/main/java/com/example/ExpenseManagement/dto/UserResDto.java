@@ -12,6 +12,7 @@ public class UserResDto {
     private String name;
 //    private String password;
     private String mobile;
+    private String email;
     @Enumerated(EnumType.STRING)
     private String role;
 
